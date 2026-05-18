@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BKS Assistant v.3.0</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+
+    <link rel="icon" href="favicon/favicon.jpg" type="image/jpg">
+    <link rel="apple-touch-icon" href="favicon/apple-icon.jpg">
+</head>
+
+<body>
+    <header>
+        <h3>BKS Assistant</h3>
+        <nav>
+        <ul>
+            <li><a href="index.html">Startseite</a></li>
+            <li><a href="ki-assistant.html">KI-Assistant</a></li>
+            <li><a href="minigames.html">Minigames</a></li>
+            <li><a href="https://rr-utilities.github.io/elibrary">eLibrary</a></li>
+        </ul>
+        </nav>
+    </header>
+</body>
+
+<body>
+<main style="margin: 151px auto; text-align: center;">
+    <h1>KI-Assistant</h1>
+    <p>Stell eine Frage oder gib ein Stichwort ein (z.B.: Ferien, neue Noten etc.).</p>
+
+    <input type="text" id="assistantInput" placeholder="Wo finde ich was?"
+        onkeyup="assistantRespond()" 
+        style="
+        width: 80%;
+        max-width: 500px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+    ">
+
+    <div id="assistantResponse" 
+        style="
+        margin-top: 20px;
+        padding: 15px;
+        max-width: 600px;
+        margin-inline: auto;
+        background: #f9f9f9;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-weight: bold;
+        ">
+    </div>
+</main>
+</body>
+
+<body>
+    <footer>
+        <h4>&copy; 2025 
+            <a href="https://sites.google.com/view/r-ravinthrarasa/projekte/education-utilities" target="_blank" class="styled-link">Education Utilities</a>, 
+            alle <a href="https://sites.google.com/view/r-ravinthrarasa/impressum" target="_blank" class="styled-link">Rechte</a> vorbehalten.
+        </h4>
+    </footer>
+</body>
+
+<script>
+    function assistantRespond() {
+        const input = document.getElementById("assistantInput").value.toLowerCase();
+        const responseBox = document.getElementById("assistantResponse");
+
+        let response = "";
+
+        if (input.includes("note")) {
+            response = "Neue Noten sollten auf schulNetz erscheinen (Startseite > AccessPortal)";
+        } else if (input.includes("schnitt")) {
+            response = "Deine Note / Schnitte / Wunschnote kannst du im Notenrechner berechnen (Startseite > Rechner).";
+        } else if (input.includes("lernen")) {
+            response = "Vokabeln können auf Quizlet gelernt werden (Startseite > AccessPortal).";
+        } else if (input.includes("essen")) {
+            response = "Schaue im Menüplan nach (Startseite > AccessPortal).";
+        } else if (input.includes("update")) {
+            response = "Die nächsten Updates werden im Dashboard verkündigt (Startseite > Dashboard).";
+        } else if (input.includes("spiel")) {
+            response = "Minigames sind in 'Minigames' auffindbar (Minigames).";
+
+
+        } else if (input.includes("ferien")) {
+            response = "Die nächsten Ferien sind in der Agenda eingetragen (Startseite > Agenda).";
+        } else if (input.includes("schulfrei")) {
+            response = "Die nächsten schulfreien Tage sind in der Agenda eingetragen (Startseite > Agenda).";
+        } else if (input.includes("feiertag")) {
+            response = "Die nächsten Feiertage sind in der Agenda eingetragen (Startseite > Agenda).";
+
+
+        } else if (input.trim() === "") {
+            response = "";
+        } else {
+            response = "Keine passenden Informationen gefunden. Versuche es mit anderen Stichwörtern.";
+        }
+
+        responseBox.textContent = response;
+    }
+</script>
+
+</html>

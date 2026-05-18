@@ -1,0 +1,8 @@
+To Do:
+-
+
+Struktur:
+Nebenseite 0: Startseite
+Nebenseite 1: KI-Assistant
+Nebenseite 2: Minigames
+Nebenseite 3: Verlinkung eLibrary

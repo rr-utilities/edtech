@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Ping Pong</title>
+<style>
+    body { 
+        text-align: center; 
+        font-family: sans-serif; 
+        margin-top: 20px; 
+        background: white; 
+        color: black;
+    }
+    canvas { 
+        background: #f0f0f0; 
+        display: block; 
+        margin: 0 auto; 
+        border: 2px solid #555; 
+    }
+    #scoreboard {
+        margin: 10px auto;
+        width: 600px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+        font-weight: bold;
+        color: black;
+    }
+    #controls {
+        margin: 10px auto 30px;
+        width: 600px;
+        font-size: 16px;
+        color: #555;
+    }
+    h2 {
+        color: #3498db;
+        margin: 50px;
+    }
+</style>
+</head>
+
+<body>
+    <h2>Ping Pong</h2>
+    <div id="scoreboard">
+        <div><span id="leftScore">0</span></div>
+        <div><span id="rightScore">0</span></div>
+    </div>
+    <div id="controls">W/S | ↑ / ↓</div>
+    <canvas id="pong" width="600" height="400"></canvas>
+</body>
+
+<script>
+    const canvas = document.getElementById('pong');
+    const ctx = canvas.getContext('2d');
+
+    const paddleWidth = 10;
+    const paddleHeight = 80;
+    const ballRadius = 8;
+
+    let leftPaddleY = (canvas.height - paddleHeight) / 2;
+    let rightPaddleY = (canvas.height - paddleHeight) / 2;
+
+    let ballX = canvas.width / 2;
+    let ballY = canvas.height / 2;
+    let ballSpeedX = 4;
+    let ballSpeedY = 3;
+
+    const paddleSpeed = 6;
+
+    let leftScore = 0;
+    let rightScore = 0;
+
+    const leftScoreElem = document.getElementById('leftScore');
+    const rightScoreElem = document.getElementById('rightScore');
+
+    const keys = {};
+    document.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
+    document.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+    function drawRect(x,y,w,h,color) {
+        ctx.fillStyle = color;
+        ctx.fillRect(x,y,w,h);
+    }
+
+    function drawCircle(x,y,r,color) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x,y,r,0,Math.PI*2);
+        ctx.fill();
+    }
+
+    function drawNet() {
+        ctx.strokeStyle = '#aaa';
+        ctx.lineWidth = 2;
+        for(let y=0; y < canvas.height; y += 20) {
+        ctx.beginPath();
+        ctx.moveTo(canvas.width/2, y);
+        ctx.lineTo(canvas.width/2, y+10);
+        ctx.stroke();
+        }
+    }
+
+    function resetBall(scoredLeft) {
+        ballX = canvas.width / 2;
+        ballY = canvas.height / 2;
+        ballSpeedX = scoredLeft ? 4 : -4;
+        ballSpeedY = (Math.random() * 6) - 3;
+    }
+
+    function update() {
+        if(keys['w'] && leftPaddleY > 0) leftPaddleY -= paddleSpeed;
+        if(keys['s'] && leftPaddleY < canvas.height - paddleHeight) leftPaddleY += paddleSpeed;
+
+        if(keys['arrowup'] && rightPaddleY > 0) rightPaddleY -= paddleSpeed;
+        if(keys['arrowdown'] && rightPaddleY < canvas.height - paddleHeight) rightPaddleY += paddleSpeed;
+
+        ballX += ballSpeedX;
+        ballY += ballSpeedY;
+
+        if(ballY + ballRadius > canvas.height || ballY - ballRadius < 0) {
+        ballSpeedY = -ballSpeedY;
+        }
+
+        if(ballX - ballRadius < paddleWidth) {
+        if(ballY > leftPaddleY && ballY < leftPaddleY + paddleHeight) {
+            ballSpeedX = -ballSpeedX;
+            let deltaY = ballY - (leftPaddleY + paddleHeight/2);
+            ballSpeedY = deltaY * 0.3;
+        } else {
+            rightScore++;
+            rightScoreElem.textContent = rightScore;
+            resetBall(false);
+        }
+        }
+
+        if(ballX + ballRadius > canvas.width - paddleWidth) {
+        if(ballY > rightPaddleY && ballY < rightPaddleY + paddleHeight) {
+            ballSpeedX = -ballSpeedX;
+            let deltaY = ballY - (rightPaddleY + paddleHeight/2);
+            ballSpeedY = deltaY * 0.3;
+        } else {
+            leftScore++;
+            leftScoreElem.textContent = leftScore;
+            resetBall(true);
+        }
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        drawRect(0,0,canvas.width,canvas.height, '#f0f0f0');
+
+        drawNet();
+        drawRect(0, leftPaddleY, paddleWidth, paddleHeight, 'black');
+        drawRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight, 'black');
+        drawCircle(ballX, ballY, ballRadius, 'black');
+    }
+
+    function loop() {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+    }
+
+    loop();
+</script>
+
+</html>

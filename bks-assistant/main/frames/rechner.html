@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notenrechner</title>
+</head>
+
+<body>
+    <div class="container" id="overlay-container">
+        <div id="overlay" class="overlay">
+            <div>
+                <h2>Wähle den Rechner</h2>
+                <button class="tab" onclick="showCalculator('punkte')">Notenrechner</button>
+                <button class="tab" onclick="showCalculator('schnitt')">Schnittrechner</button>
+                <button class="tab" onclick="showCalculator('wunschnote')">Wunschnote</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container" id="calculator-container" style="display: none;">
+        <div class="tab-container">
+            <button class="tab" onclick="switchCalculator('punkte')">Notenrechner</button>
+            <button class="tab" onclick="switchCalculator('schnitt')">Schnittrechner</button>
+            <button class="tab active" onclick="switchCalculator('wunschnote')">Wunschnote</button>
+        </div>
+        
+        <!-- Notenrechner -->
+        <div id="punkte" class="calculator">
+            <h2>Notenrechner</h2>
+            <div class="note-row">
+                <input type="number" id="erreicht" class="punkte" placeholder="Erreichte Punkte">
+                <input type="number" id="gesamt" class="punkte" placeholder="Gesamtpunkte">
+            </div>
+            <button id="calculate-punkte">Berechnen</button>
+            <h3>Note: <span id="result-punkte">-</span></h3>
+        </div>
+
+        <!-- Schnittrechner -->
+        <div id="schnitt" class="calculator">
+            <h2>Schnittrechner</h2>
+            <div id="noten-container">
+                <div class="note-row">
+                    <input type="number" class="note" placeholder="Note" min="1" max="6">
+                    <input type="number" class="weight" placeholder="Gewicht" min="1" value="1">
+                </div>
+                <div class="note-row">
+                    <input type="number" class="note" placeholder="Note" min="1" max="6">
+                    <input type="number" class="weight" placeholder="Gewicht" min="1" value="1">
+                </div>
+                <div class="note-row">
+                    <input type="number" class="note" placeholder="Note" min="1" max="6">
+                    <input type="number" class="weight" placeholder="Gewicht" min="1" value="1">
+                </div>
+                <div class="note-row">
+                    <input type="number" class="note" placeholder="Note" min="1" max="6">
+                    <input type="number" class="weight" placeholder="Gewicht" min="1" value="1">
+                </div>
+            </div>
+            <button id="add-note">Weitere Note hinzufügen</button>
+            <button id="calculate-schnitt">Berechnen</button>
+            <h3>Durchschnitt: <span id="result">-</span></h3>
+        </div>
+
+        <!-- Wunschnote Rechner -->
+        <div id="wunschnote" class="calculator active">
+            <h2>Wunschnote</h2>
+            <div class="note-row">
+                <input type="number" id="gewünschter-schnitt" class="punkte" placeholder="Gewünschter Schnitt" min="1" max="6">
+            </div>
+            <div id="noten-container-wunsch">
+                <div class="note-row">
+                    <input type="number" class="note" placeholder="Note" min="1" max="6">
+                    <input type="number" class="weight" placeholder="Gewicht" min="1" value="1">
+                </div>
+                <div class="note-row">
+                    <input type="number" class="note" placeholder="Note" min="1" max="6">
+                    <input type="number" class="weight" placeholder="Gewicht" min="1" value="1">
+                </div>
+                <div class="note-row">
+                    <input type="number" class="note" placeholder="Note" min="1" max="6">
+                    <input type="number" class="weight" placeholder="Gewicht" min="1" value="1">
+                </div>
+                <div class="note-row">
+                    <input type="number" class="note" placeholder="Note" min="1" max="6">
+                    <input type="number" class="weight" placeholder="Gewicht" min="1" value="1">
+                </div>
+            </div>
+            <button id="add-note-wunsch">Weitere Note hinzufügen</button>
+            <button id="calculate-wunsch">Berechnen</button>
+            <h3>Benötigte Wunschnote: <span id="result-wunsch">-</span></h3>
+        </div>
+    </div>
+</body>
+
+<script>
+    // Notenrechner
+    function showCalculator(type) {
+        document.getElementById("overlay-container").style.display = "none";
+        document.getElementById("calculator-container").style.display = "block";
+        switchCalculator(type);
+    }
+
+    function switchCalculator(type) {
+        document.querySelectorAll('.calculator').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(type).classList.add('active');
+        document.querySelector(`[onclick="switchCalculator('${type}')"]`).classList.add('active');
+    }
+
+    // Schnittrechner
+    function berechneDurchschnitt() {
+        let inputs = document.querySelectorAll(".note");
+        let weights = document.querySelectorAll(".weight");
+        let sum = 0;
+        let totalWeight = 0;
+        inputs.forEach((input, index) => {
+            let note = parseFloat(input.value);
+            let weight = parseFloat(weights[index].value) || 1;
+            if (!isNaN(note)) {
+                sum += note * weight;
+                totalWeight += weight;
+            }
+        });
+        let average = totalWeight > 0 ? (sum / totalWeight).toFixed(2) : "Error";
+        document.getElementById("result").textContent = average;
+    }
+
+    // Wunschnote
+    function berechneWunschnote() {
+        const a = parseFloat(document.getElementById("gewünschter-schnitt").value);
+        const notes = document.querySelectorAll(".note");
+        const weights = document.querySelectorAll(".weight");
+
+        let sumXY = 0;
+        let sumY = 0;
+
+        notes.forEach((noteInput, i) => {
+            const x = parseFloat(noteInput.value);
+            const y = parseFloat(weights[i].value) || 1;
+
+            if (!isNaN(x)) {
+                sumXY += x * y;
+                sumY += y;
+            }
+        });
+
+        if (!isNaN(a) && sumY > 0) {
+            const b = a * (sumY + 1) - sumXY;
+            document.getElementById("result-wunsch").textContent = b.toFixed(2);
+        } else {
+            document.getElementById("result-wunsch").textContent = "Error";
+        }
+    }
+
+    // Gesamt
+    document.getElementById("add-note").addEventListener("click", function() {
+        let container = document.getElementById("noten-container");
+        let noteRow = document.createElement("div");
+        noteRow.className = "note-row";
+        let noteInput = document.createElement("input");
+        noteInput.type = "number";
+        noteInput.className = "note";
+        noteInput.placeholder = "Note";
+        noteInput.min = "1";
+        noteInput.max = "6";
+        let weightInput = document.createElement("input");
+        weightInput.type = "number";
+        weightInput.className = "weight";
+        weightInput.placeholder = "Gewicht";
+        weightInput.min = "1";
+        weightInput.value = "1";
+        noteRow.appendChild(noteInput);
+        noteRow.appendChild(weightInput);
+        container.appendChild(noteRow);
+        noteInput.focus();
+    });
+
+    document.getElementById("add-note-wunsch").addEventListener("click", function() {
+        let container = document.getElementById("noten-container-wunsch");
+        let noteRow = document.createElement("div");
+        noteRow.className = "note-row";
+        let noteInput = document.createElement("input");
+        noteInput.type = "number";
+        noteInput.className = "note";
+        noteInput.placeholder = "Note";
+        noteInput.min = "1";
+        noteInput.max = "6";
+        let weightInput = document.createElement("input");
+        weightInput.type = "number";
+        weightInput.className = "weight";
+        weightInput.placeholder = "Gewicht";
+        weightInput.min = "1";
+        weightInput.value = "1";
+        noteRow.appendChild(noteInput);
+        noteRow.appendChild(weightInput);
+        container.appendChild(noteRow);
+        noteInput.focus();
+    });
+
+    document.getElementById("calculate-schnitt").addEventListener("click", berechneDurchschnitt);
+    document.getElementById("calculate-punkte").addEventListener("click", function() {
+        let erreicht = parseFloat(document.getElementById("erreicht").value);
+        let gesamt = parseFloat(document.getElementById("gesamt").value);
+        if (!isNaN(erreicht) && !isNaN(gesamt) && gesamt > 0) {
+            let note = (erreicht / gesamt) * 5 + 1;
+            document.getElementById("result-punkte").textContent = note.toFixed(2);
+        } else {
+            document.getElementById("result-punkte").textContent = "Error";
+        }
+    });
+
+    document.getElementById("calculate-wunsch").addEventListener("click", berechneWunschnote);
+
+    document.querySelectorAll(".note, .weight, .punkte").forEach(input => {
+        input.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                if (document.getElementById("schnitt").classList.contains("active")) {
+                    berechneDurchschnitt();
+                } else if (document.getElementById("wunschnote").classList.contains("active")) {
+                    berechneWunschnote();
+                } else {
+                    berechneNote();
+                }
+            }
+        });
+    });
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f4f4f4;
+        margin: 0;
+    }
+
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 450px;
+    }
+
+    .tab-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .tab {
+        padding: 10px 15px;
+        cursor: pointer;
+        background: #333;
+        color: white;
+        border: none;
+        margin: 0 5px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .tab.active {
+        background: #808080;
+    }
+
+    .calculator {
+        display: none;
+    }
+
+    .calculator.active {
+        display: block;
+    }
+
+    .note-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+
+    .note, .weight, .punkte {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .note { width: 60%; margin-right: 5px; }
+    .weight { width: 30%; }
+
+    .punkte { width: 48%; }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    button {
+        background: #333;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        margin: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #555;
+    }
+</style>
+
+</html>

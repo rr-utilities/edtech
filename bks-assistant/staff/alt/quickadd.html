@@ -1,0 +1,158 @@
+<body>
+    <h1>QuickAdd</h1>
+</body>
+<iframe src="main/frames/quickadd.html" width="100%" height="650px" frameborder="0">
+    Dein Browser unterstützt keine eingebettenten Frames.
+</iframe>
+
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick-Add</title>
+</head>
+
+<body>
+    <div class="quick-add">
+        <div class="add-row">
+            <input id="newItem" type="text" placeholder="Neuer Eintrag…">
+            <button id="addBtn">Hinzufügen</button>
+        </div>
+
+        <ul id="itemList"></ul>
+    </div>
+</body>
+
+<script>
+    let items = JSON.parse(localStorage.getItem("quickItems")) || [];
+
+    const listEl = document.getElementById("itemList");
+    const inputEl = document.getElementById("newItem");
+
+    function save() {
+        localStorage.setItem("quickItems", JSON.stringify(items));
+    }
+
+    function render() {
+        listEl.innerHTML = "";
+
+        items.forEach((text, index) => {
+            const li = document.createElement("li");
+            li.className = "item";
+
+            const span = document.createElement("span");
+            span.textContent = text;
+
+            const editBtn = document.createElement("button");
+            editBtn.textContent = "Bearbeiten";
+            editBtn.onclick = () => editItem(index);
+
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "Löschen";
+            delBtn.onclick = () => {
+                items.splice(index, 1);
+                save();
+                render();
+            };
+
+            li.appendChild(span);
+            li.appendChild(editBtn);
+            li.appendChild(delBtn);
+            listEl.appendChild(li);
+        });
+    }
+
+    function addItem() {
+        const value = inputEl.value.trim();
+        if (!value) return;
+
+        items.push(value);
+        inputEl.value = "";
+        save();
+        render();
+    }
+
+    function editItem(index) {
+        const newText = prompt("Eintrag bearbeiten:", items[index]);
+        if (newText !== null && newText.trim() !== "") {
+            items[index] = newText.trim();
+            save();
+            render();
+        }
+    }
+
+    document.getElementById("addBtn").addEventListener("click", addItem);
+    inputEl.addEventListener("keydown", e => {
+        if (e.key === "Enter") addItem();
+    });
+
+    render();
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .quick-add {
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #fae0e0;
+        border-radius: 12px;
+    }
+
+    .quick-add h2 {
+        margin-top: 0;
+        text-align: center;
+    }
+
+    .add-row {
+        display: flex;
+        gap: 10px;
+    }
+
+    .add-row input {
+        flex: 1;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .add-row button {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    #itemList {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 8px;
+    }
+
+    .item span {
+        flex: 1;
+        word-break: break-word;
+    }
+
+    .item button {
+        margin-left: 6px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+</style>
+
+</html>

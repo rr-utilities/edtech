@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Target-Test</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; overflow: hidden; }
+        #target {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background: red;
+        border-radius: 50%;
+        cursor: pointer;
+        }
+        #info {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        font-size: 18px;
+        background: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="target"></div>
+    <div id="info">Klicke auf das Ziel!</div>
+</body>
+
+<script>
+    const target = document.getElementById("target");
+    const info = document.getElementById("info");
+    let startTime;
+
+    function placeTarget() {
+        const maxX = window.innerWidth - 50;
+        const maxY = window.innerHeight - 50;
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+        target.style.left = x + "px";
+        target.style.top = y + "px";
+        startTime = Date.now();
+    }
+
+    target.onclick = () => {
+        const time = Date.now() - startTime;
+        info.textContent = `Reaktionszeit: ${time} ms`;
+        setTimeout(() => {
+        info.textContent = "Klicke auf das Ziel!";
+        placeTarget();
+        }, 1000);
+    };
+
+    placeTarget();
+</script>
+
+</html>

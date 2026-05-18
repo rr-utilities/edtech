@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Ultimate Tic Tac Toe</title>
+<style>
+    body { font-family: sans-serif; text-align: center; margin-top: 30px; }
+    #big-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 8px;
+      width: 480px;
+      margin: 0 auto 20px;
+    }
+    .small-board {
+      display: grid;
+      grid-template-columns: repeat(3, 50px);
+      grid-template-rows: repeat(3, 50px);
+      gap: 4px;
+      border: 3px solid #333;
+      position: relative;
+    }
+    .small-board.active {
+      border-color: #007bff;
+    }
+    .small-board.won-X {
+      background-color: #cce5ff;
+    }
+    .small-board.won-O {
+      background-color: #ffd6cc;
+    }
+    .cell {
+      width: 50px; height: 50px;
+      background: #eee;
+      font-size: 32px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #999;
+    }
+    .cell:hover {
+      background: #ddd;
+    }
+    #status {
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 8px 20px;
+      font-size: 16px;
+    }
+    h2 {
+    color: #3498db;
+    margin: 50px;
+    }
+</style>
+</head>
+
+<body>
+  <h2>Ultimate Tic Tac Toe</h2>
+  <div id="status">Spieler X ist am Zug</div>
+  <div id="big-board"></div>
+</body>
+
+<script>
+  const bigBoard = document.getElementById('big-board');
+  const status = document.getElementById('status');
+
+  const PLAYER_X = 'X';
+  const PLAYER_O = 'O';
+  let currentPlayer = PLAYER_X;
+
+  let boardState = Array(3).fill(null).map(() =>
+    Array(3).fill(null).map(() =>
+      Array(3).fill(null).map(() => Array(3).fill(''))
+    )
+  );
+
+  let smallBoardWinners = Array(3).fill(null).map(() => Array(3).fill(''));
+
+  let activeSmallBoard = null;
+
+  let bigWinner = '';
+
+  function createBoard() {
+    bigBoard.innerHTML = '';
+    for(let bigY=0; bigY<3; bigY++) {
+      for(let bigX=0; bigX<3; bigX++) {
+        const smallBoardElem = document.createElement('div');
+        smallBoardElem.classList.add('small-board');
+        smallBoardElem.dataset.bigX = bigX;
+        smallBoardElem.dataset.bigY = bigY;
+
+        for(let smallY=0; smallY<3; smallY++) {
+          for(let smallX=0; smallX<3; smallX++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.dataset.bigX = bigX;
+            cell.dataset.bigY = bigY;
+            cell.dataset.smallX = smallX;
+            cell.dataset.smallY = smallY;
+            cell.addEventListener('click', onCellClick);
+            smallBoardElem.appendChild(cell);
+          }
+        }
+        bigBoard.appendChild(smallBoardElem);
+      }
+    }
+  }
+
+  function onCellClick(e) {
+    if (bigWinner) return;
+
+    const cell = e.target;
+    const bigX = Number(cell.dataset.bigX);
+    const bigY = Number(cell.dataset.bigY);
+    const smallX = Number(cell.dataset.smallX);
+    const smallY = Number(cell.dataset.smallY);
+
+    if (activeSmallBoard) {
+      if (activeSmallBoard.x !== bigX || activeSmallBoard.y !== bigY) return;
+    } else {
+      if (smallBoardWinners[bigY][bigX]) return;
+    }
+
+    if (boardState[bigY][bigX][smallY][smallX] !== '') return;
+
+    boardState[bigY][bigX][smallY][smallX] = currentPlayer;
+    updateCell(cell, currentPlayer);
+
+    const winner = checkWinner(boardState[bigY][bigX]);
+    if (winner && winner !== '') {
+      smallBoardWinners[bigY][bigX] = winner;
+      markSmallBoardWinner(bigX, bigY, winner);
+    } else if (isBoardFull(boardState[bigY][bigX])) {
+      smallBoardWinners[bigY][bigX] = 'D';
+      markSmallBoardDraw(bigX, bigY);
+    }
+
+    const bigBoardWinner = checkWinner(smallBoardWinners);
+    if (bigBoardWinner && bigBoardWinner !== '') {
+      bigWinner = bigBoardWinner;
+      status.textContent = `Spieler ${bigWinner} gewinnt das grosse Spiel! 🎉`;
+      highlightBigWinner(bigWinner);
+      return;
+    } else if (isBoardFull(smallBoardWinners)) {
+      bigWinner = 'D';
+      status.textContent = 'Unentschieden im grossen Spiel!';
+      return;
+    }
+
+    activeSmallBoard = smallBoardWinners[smallY][smallX] === '' ? {x: smallX, y: smallY} : null;
+
+    updateActiveBoards();
+    currentPlayer = currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
+    status.textContent = `Spieler ${currentPlayer} ist am Zug`;
+  }
+
+  function updateCell(cell, player) {
+    cell.textContent = player;
+    cell.style.cursor = 'default';
+  }
+
+  function markSmallBoardWinner(bigX, bigY, player) {
+    const smallBoardElem = getSmallBoardElement(bigX, bigY);
+    smallBoardElem.classList.remove('active');
+    smallBoardElem.classList.add(player === 'X' ? 'won-X' : 'won-O');
+    for (const cell of smallBoardElem.querySelectorAll('.cell')) {
+      cell.style.cursor = 'default';
+    }
+  }
+
+  function markSmallBoardDraw(bigX, bigY) {
+    const smallBoardElem = getSmallBoardElement(bigX, bigY);
+    smallBoardElem.classList.remove('active');
+    smallBoardElem.style.backgroundColor = '#ccc';
+    for (const cell of smallBoardElem.querySelectorAll('.cell')) {
+      cell.style.cursor = 'default';
+    }
+  }
+
+  function highlightBigWinner(player) {
+    for(let bigY=0; bigY<3; bigY++) {
+      for(let bigX=0; bigX<3; bigX++) {
+        if(smallBoardWinners[bigY][bigX] === player) {
+          const sb = getSmallBoardElement(bigX, bigY);
+          sb.style.borderColor = '#28a745';
+          sb.style.backgroundColor = player === 'X' ? '#a8e6cf' : '#ff9a8d';
+        }
+      }
+    }
+  }
+
+  function updateActiveBoards() {
+    for(let bigY=0; bigY<3; bigY++) {
+      for(let bigX=0; bigX<3; bigX++) {
+        const sb = getSmallBoardElement(bigX, bigY);
+        sb.classList.remove('active');
+
+        if(smallBoardWinners[bigY][bigX]) continue;
+
+        if(activeSmallBoard === null) {
+          sb.classList.add('active');
+          enableSmallBoardCells(sb, true);
+        } else if(activeSmallBoard.x === bigX && activeSmallBoard.y === bigY) {
+          sb.classList.add('active');
+          enableSmallBoardCells(sb, true);
+        } else {
+          enableSmallBoardCells(sb, false);
+        }
+      }
+    }
+  }
+
+  function enableSmallBoardCells(smallBoardElem, enabled) {
+    for (const cell of smallBoardElem.querySelectorAll('.cell')) {
+      if (cell.textContent === '') {
+        cell.style.pointerEvents = enabled ? 'auto' : 'none';
+        cell.style.background = enabled ? '#eee' : '#f9f9f9';
+        cell.style.cursor = enabled ? 'pointer' : 'default';
+      }
+    }
+  }
+
+  function getSmallBoardElement(bigX, bigY) {
+    return bigBoard.querySelector(`.small-board[data-big-x="${bigX}"][data-big-y="${bigY}"]`);
+  }
+
+  function checkWinner(board) {
+    const lines = [
+      [[0,0],[1,0],[2,0]],
+      [[0,1],[1,1],[2,1]],
+      [[0,2],[1,2],[2,2]],
+
+      [[0,0],[0,1],[0,2]],
+      [[1,0],[1,1],[1,2]],
+      [[2,0],[2,1],[2,2]],
+
+      [[0,0],[1,1],[2,2]],
+      [[2,0],[1,1],[0,2]],
+    ];
+    for (const line of lines) {
+      const [a,b,c] = line;
+      if (board[a[1]][a[0]] && board[a[1]][a[0]] === board[b[1]][b[0]] && board[a[1]][a[0]] === board[c[1]][c[0]]) {
+        return board[a[1]][a[0]];
+      }
+    }
+    return '';
+  }
+
+  function isBoardFull(board) {
+    for(let y=0; y<board.length; y++) {
+      for(let x=0; x<board[y].length; x++) {
+        if(board[y][x] === '') return false;
+      }
+    }
+    return true;
+  }
+
+  createBoard();
+  updateActiveBoards();
+</script>
+
+</body>
+</html>

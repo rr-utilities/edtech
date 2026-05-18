@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>BKS Assistant v.3.2</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="../script.js"></script>
+
+    <link rel="icon" href="../favicon.jpg" type="image/jpg">
+    <link rel="apple-touch-icon" href="../favicon.jpg">
+    <meta name="apple-mobile-web-app-title" content="BKS Assistant">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+
+<body>
+    <header>
+        <h3>BKS Assistant</h3>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Startseite</a></li>
+                <li><a href="notenrechner.html">Notenrechner</a></li>
+                <li><a href="bks_chur.html" target="_blank">bks_chur</a></li>
+                <li><a href="pause.html"><i class="fa-solid fa-pause"></i></a></li>
+                <li><a href="info.html" title="Portal Info"><i class="fas fa-circle-info"></i></a></li>
+                <li><a href="https://rr-utilities.github.io/elibrary">eLibrary</a></li>
+            </ul>
+        </nav>
+    </header>
+</body>
+
+<body>
+    <main style="text-align: center;">
+        <h1>Pause</h1>
+        <div class="panel-container">
+            <div class="panel" data-url="frames/reaktionstest.html">Reaktionstest</div>
+            <div class="panel" data-url="frames/target.html">Target</div>
+        </div>
+        <br>
+        <div class="panel-container">
+            <div class="panel" data-url="frames/memory.html">Memory</div>
+            <div class="panel" data-url="frames/flappy-bird.html">Flappy Bird Clone</div>
+        </div>
+        <br>
+        <div class="panel-container">
+            <div class="panel" data-url="frames/tic-tac-toe.html">Tic Tac Toe</div>
+            <div class="panel" data-url="frames/ultimate-tic-tac-toe.html">Ultimate Tic Tac Toe</div>
+        </div>
+        <br>
+        <div class="panel-container">
+            <div class="panel" data-url="frames/snake.html">Snake</div>
+            <div class="panel" data-url="frames/ping-pong.html">Ping Pong</div>
+        </div>
+    </main>
+</body>
+
+<br><br><br><br><br><br><br><br><br><br>
+
+<style>
+    .panel-container {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+    .panel {
+        width: 180px;
+        height: 100px;
+        background: #d1d1d1;
+        color: #222;
+        font-size: 20px;
+        font-weight: 600;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 12px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        user-select: none;
+        transition: background 0.25s, box-shadow 0.25s;
+        border: 1.5px solid #bbb;
+    }
+    .panel:hover {
+        background: #bcbcbc;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+        border-color: #999;
+    }
+</style>
+
+<script>
+    document.querySelectorAll('.panel').forEach(panel => {
+        panel.addEventListener('click', () => {
+        const url = panel.getAttribute('data-url');
+        if (url) window.open(url, '_blank');
+        });
+    });
+</script>
+
+<body>
+    <footer>
+        <h4>&copy; 2025 - 2026 <a href="https://sites.google.com/view/r-ravinthrarasa/elibrary" target="_blank" class="styled-link">Education Utilities</a>, alle <a href="https://sites.google.com/view/r-ravinthrarasa/impressum" target="_blank" class="styled-link">Rechte</a> vorbehalten.</h4>
+    </footer>
+</body>
+
+</html>

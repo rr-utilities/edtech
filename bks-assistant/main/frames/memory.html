@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; margin-top: 50px; }
+        #sequence { font-size: 32px; margin: 20px; letter-spacing: 10px; }
+        #inputArea { margin-top: 20px; }
+        input { font-size: 20px; padding: 5px; }
+        h2 {
+            color: #3498db;
+            margin: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Memory</h2>
+    <div id="sequence"></div>
+    <div id="inputArea" style="display:none;">
+        <input type="text" id="userInput" maxlength="10" autofocus placeholder="Zahl eingeben">
+        <div id="result" style="margin-top:10px;"></div>
+    </div>
+</body>
+
+<script>
+    const sequenceEl = document.getElementById("sequence");
+    const inputArea = document.getElementById("inputArea");
+    const userInput = document.getElementById("userInput");
+    const result = document.getElementById("result");
+
+    let currentSequence = "";
+
+    function generateSequence(length = 5) {
+        let seq = "";
+        for (let i = 0; i < length; i++) {
+        seq += Math.floor(Math.random() * 10);
+        }
+        return seq;
+    }
+
+    function startTest() {
+        currentSequence = generateSequence();
+        sequenceEl.textContent = currentSequence;
+        inputArea.style.display = "none";
+        result.textContent = "";
+
+        setTimeout(() => {
+        sequenceEl.textContent = "–––––––";
+        inputArea.style.display = "block";
+        userInput.value = "";
+        userInput.focus();
+        }, 2000);
+    }
+
+    userInput.addEventListener("keyup", function(e) {
+        if (e.key === "Enter") {
+        const guess = userInput.value;
+        if (guess === currentSequence) {
+            result.textContent = "✅ Richtig!";
+        } else {
+            result.textContent = `❌ Falsch. Richtig war: ${currentSequence}`;
+        }
+        setTimeout(startTest, 2000);
+        }
+    });
+
+    startTest();
+</script>
+
+</html>

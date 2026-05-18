@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Reaktionstest</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; margin-top: 50px; }
+        #testBox { width: 200px; height: 200px; margin: 0 auto; background: grey; cursor: pointer; }
+        #info, #timer { margin-top: 20px; font-size: 18px; }
+        h2 {
+            color: #3498db;
+            margin: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Reaktionstest</h2>
+    <div id="testBox"></div>
+    <div id="info">Klicke oder drücke Leertaste, wenn die Box grün wird!</div>
+    <div id="timer">Zeit: 0 ms</div>
+</body>
+
+<script>
+    let box = document.getElementById("testBox");
+    let info = document.getElementById("info");
+    let timerDisplay = document.getElementById("timer");
+    let startTime, timeout, interval;
+    let isReady = false;
+
+    function startTest() {
+        box.style.background = "grey";
+        info.textContent = "Warte auf Grün...";
+        timerDisplay.textContent = "Zeit: 0 ms";
+        clearInterval(interval);
+        isReady = false;
+
+        timeout = setTimeout(() => {
+        box.style.background = "green";
+        startTime = Date.now();
+        isReady = true;
+        interval = setInterval(() => {
+            timerDisplay.textContent = "Zeit: " + (Date.now() - startTime) + " ms";
+        }, 50);
+        }, Math.random() * 3000 + 2000); // 2-5 Sekunden
+    }
+
+    function react() {
+        if (isReady) {
+        let reactionTime = Date.now() - startTime;
+        clearInterval(interval);
+        info.textContent = `Super!`;
+        isReady = false;
+        setTimeout(startTest, 1000);
+        } else {
+        clearTimeout(timeout);
+        clearInterval(interval);
+        timerDisplay.textContent = "Zeit: 0 ms";
+        info.textContent = "Zu früh! Versuch es nochmal.";
+        setTimeout(startTest, 1000);
+        }
+    }
+
+    box.onclick = react;
+
+    document.addEventListener("keydown", function(e) {
+        if (e.code === "Space") {
+        e.preventDefault(); // Verhindert Scrollen
+        react();
+        }
+    });
+
+    startTest();
+</script>
+
+</html>

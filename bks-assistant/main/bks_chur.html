@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bks_chur</title>
+    <link rel="icon" href="favicon.jpg" type="image/jpg">
+    <link rel="apple-touch-icon" href="favicon.jpg">
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        }
+
+        body {
+        background-color: #f9f9f9;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        }
+
+        .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 200px;
+        }
+
+        .btn {
+        text-align: center;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+        text-decoration: none;
+        transition: background 0.2s ease-in-out;
+        }
+
+        .btn-hexalengua {
+        background-color: #e63946;
+        }
+
+        .btn-hexalengua:hover {
+        background-color: #c82333;
+        }
+
+        .btn-quizlet {
+        background-color: #4255FF;
+        }
+
+        .btn-quizlet:hover {
+        background-color: #2e3ccf;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="button-container">
+        <a class="btn btn-quizlet" href="https://quizlet.com/user/bks_chur/folders" target="_blank">Quizlet</a>
+        <a class="btn btn-hexalengua" href="https://rr-utilities.github.io/hexalengua-rosshans-version/webCards/index.html" target="_blank">HexaLengua (webCards)</a>
+    </div>
+</body>
+</html>
