@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kopfentspanner v.1.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-top: 10px;
+        }
+
+        .pomodoro-box {
+            background-color: #eaf1ff;
+            padding: 20px;
+            margin: 30px auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            width: 90%;
+        }
+
+        .pomodoro-box h2 {
+            margin-bottom: 10px;
+            color: #003366;
+        }
+
+        .pomodoro-display {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #003366;
+        }
+
+        .pomodoro-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .pomodoro-buttons button {
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            opacity: 0.7;
+        }
+
+        .pomodoro-hint {
+            font-size: 0.85rem;
+            color: gray;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="flex-grow: 1;"></div>
+
+    <div class="pomodoro-box">
+        <h2>Pomodoro Timer</h2>
+        <div class="pomodoro-display">25:00</div>
+        <div class="pomodoro-buttons">
+            <button>Start</button>
+            <button>Pause</button>
+            <button>Reset</button>
+        </div>
+        <p class="pomodoro-hint">Danach: 5 Minuten dann 15 Minuten Pause</p>
+    </div>
+
+    <div style="flex-grow: 1;"></div>
+
+    <br>
+
+    <script>
+        let pomodoroDuration = 25 * 60;
+        let timeLeft = pomodoroDuration;
+        let timerRunning = false;
+        let timerInterval;
+
+        const display = document.querySelector(".pomodoro-display");
+        const [startBtn, pauseBtn, resetBtn] = document.querySelectorAll(".pomodoro-buttons button");
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!timerRunning) {
+                timerInterval = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                    }
+                }, 1000);
+                timerRunning = true;
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerRunning = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            timeLeft = pomodoroDuration;
+            updateDisplay();
+        }
+
+        startBtn.disabled = false;
+        pauseBtn.disabled = false;
+        resetBtn.disabled = false;
+
+        startBtn.addEventListener("click", startTimer);
+        pauseBtn.addEventListener("click", pauseTimer);
+        resetBtn.addEventListener("click", resetTimer);
+
+        updateDisplay();
+    </script>
+</body>
+</html>

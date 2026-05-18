@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>vibecoder v.1.0</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="icon" href="favicon/vibecoder.jpg" type="image/png">
+    <link rel="apple-touch-icon" href="favicon/vibecoder.jpg">
+    <meta name="apple-mobile-web-app-title" content="Tutor Assistant">
+</head>
+
+<body>
+
+<h1>Vibecoder</h1>
+<p class="subtitle">
+Sammlung der Vibecoding-Projekte (meist experimentell, oft KI-unterstützt).
+</p>
+
+<h2>Projekte</h2>
+
+<div class="topbar">
+    <input placeholder="Suche..." oninput="suche(this.value)">
+</div>
+
+<div class="project">
+    <img src="favicon/rechner-plusplus.jpg" class="logo">
+    <div>
+        <div class="date">2026-11-04</div>
+        <span style="color: red;">NEU</span>
+        <a href="projects/rechner-plusplus/index.html" target="_blank"><b>Rechner++ v.1.0</b></a>
+        <p>Ein handlicher Rechner, der nicht typische Rechnungen berechnet [WebApp].</p>
+    </div>
+</div>
+
+<div class="project">
+    <img src="favicon/kopfentspanner.jpeg" class="logo">
+    <div>
+        <div class="date">2025-09-08</div>
+        <a href="projects/kopfentspanner/index.html" target="_blank"><b>kopfentspanner v.1.0</b></a>
+        <p>Simpler Pomodoro-Timer.</p>
+    </div>
+</div>
+
+<div class="project">
+    <img src="favicon/kopfrechner.jpg" class="logo">
+    <div>
+        <div class="date">2025-03-05</div>
+        <a href="projects/kopfrechner/index.html" target="_blank"><b>kopfrechner v.1.0</b></a>
+        <p>Simpler Kopfrechner.</p>
+    </div>
+</div>
+
+<hr>
+
+<p style="font-size: 12px; color: gray;">Diese Seite und viele Projekte wurden mit grosszügiger Hilfe von KI erstellt. Der Fokus liegt aufs Lernen, Experimentieren und schnellem Coden.</p>
+<div class="link-container">
+    <a href="../index.html">EdTech</a>
+</div>
+
+</body>
+
+<script>
+    function suche(text) {
+    let projects = document.querySelectorAll(".project");
+
+    projects.forEach(p => {
+        let content = p.innerText.toLowerCase();
+        p.style.display = content.includes(text.toLowerCase()) ? "block" : "none";
+    });
+    }
+</script>
+
+</html>

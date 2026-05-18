@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta charset="UTF-8">
+
+    <title>Rechner++ v.1.0</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="icon" href="favicon/favicon.jpg" type="image/jpg">
+    <link rel="apple-touch-icon" href="favicon/apple-icon.jpg">
+    <meta name="apple-mobile-web-app-title" content="Rechner++">
+</head>
+
+<body>
+
+    <br><br>
+    <center><h1>Rechner++</h1></center>
+
+<section>
+    <h3>Brüche</h3>
+
+    <input id="a" placeholder="Zähler 1">
+    <button onclick="bruchOp('+')">+</button>
+    <button onclick="bruchOp('-')">−</button>
+    <input id="c" placeholder="Zähler 2">
+
+    <br>
+
+    <input id="b" placeholder="Nenner 1">
+    <button onclick="bruchOp('*')">×</button>
+    <button onclick="bruchOp('/')">÷</button>
+    <input id="d" placeholder="Nenner 2">
+
+    <p id="bruchOut" style="font-size: 20px"></p>
+</section>
+
+<section>
+    <h3>Potenzen und Wurzeln</h3>
+
+    <label>Basis:</label><input id="base" placeholder="Potenzen">
+    <label>Radikant:</label><input id="rad" placeholder="Wurzel">
+    <label>Exponent:</label><input id="exp" placeholder="">
+
+    <button onclick="potenzWurzel()">Berechnen</button>
+
+    <p id="potOut"></p>
+</section>
+
+<section>
+    <h3>Logarithmus</h3>
+
+    <label>Basis:</label><input id="logBase" placeholder="a">
+    <label>Numerus:</label><input id="logB" placeholder="b">
+    <button onclick="logExp()">Berechnen</button>
+
+    <p id="logOut"></p>
+</section>
+
+<section>
+    <h3>Lineare Gleichung (ax + b = 0)</h3>
+
+    <input id="la" placeholder="a">
+    <input id="lb" placeholder="b">
+
+    <button onclick="linear()">Lösen</button>
+
+    <p id="linOut"></p>
+</section>
+
+<section>
+    <h3>Quadratische Gleichung (ax² + bx + c = 0)</h3>
+
+    <input id="qa" placeholder="a">
+    <input id="qb" placeholder="b">
+    <input id="qc" placeholder="c">
+
+    <button onclick="quad()">Lösen</button>
+
+    <p id="quadOut"></p>
+</section>
+
+<section>
+    <h3>Lineares Gleichungssystem</h3>
+    <div id="lgsInputs">
+        <div class="eqRow">
+            <input placeholder="a" class="a"><input placeholder="b" class="b"><input placeholder="c" class="c">
+        </div>
+        <div class="eqRow">
+            <input placeholder="a" class="a"><input placeholder="b" class="b"><input placeholder="c" class="c">
+        </div>
+    </div>
+
+    <button onclick="addLGS()">+ Gleichung</button>
+    <button onclick="lgs()">Lösen</button>
+
+    <p id="lgsOut"></p>
+</section>
+
+<section>
+    <h3>Polynom / Horner-Schema</h3>
+    <p>Alle Koeffizienten und Glieder angeben (auch 0 und 1). Mit Kommas trennen:</p>
+
+    <input id="poly" placeholder="a, b, c, …"> 
+    <button onclick="horner()">Nullstellen prüfen</button>
+
+    <p id="hornerOut"></p>
+</section>
+
+</body>
+
+<script src="script.js"></script>
+
+</html>
