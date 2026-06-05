@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    font-family: Arial;
+    background: #eee;
+}
+
+.panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-right: 1px solid #ccc;
+}
+
+canvas {
+    border: 1px solid #999;
+    background: white;
+}
+
+.topbar, .bottombar, .previewbar, .toolbar {
+    display: flex;
+    gap: 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #ddd;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.tool {
+    background: #eee;
+    border: 1px solid #aaa;
+    cursor: pointer;
+}
+
+.tool.active {
+    background: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+.tool {
+    padding: 6px 10px;
+    border: 1px solid #aaa;
+    background: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: smaller;
+}
+
+.tool:hover {
+    background: #ddd;
+}
+
+@media (max-width: 1225px) {
+
+    body {
+        flex-direction: column;
+    }
+
+    .panel.edit {
+        order: 1;
+    }
+
+    .panel.preview {
+        order: 2;
+    }
+
+}
+
+@media screen and (max-width: 720px) {
+    body > * {
+        display: none !important;
+    }
+
+    body::after {
+        content: "Onion Studio ist nur auf Desktop verfügbar.";
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        font-size: 1.5rem;
+        color: #000;
+        background: #fff;
+        padding: 20px;
+        box-sizing: border-box;
+        z-index: 9999;
+    }
+}

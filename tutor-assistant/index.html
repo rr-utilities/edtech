@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Tutor Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="icon" href="main/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="main/favicon.png">
+    <meta name="apple-mobile-web-app-title" content="Tutor Assistant">
+</head>
+
+<body>
+    <h2>Dashboard</h2>
+
+    <div class="sneak">
+        <h3>Nächster Termin</h3>
+        <p id="nextEvent">Keine Termine vorhanden.</p>
+        <a href="calendar.html" class="btn">Siehe Kalender</a>
+
+        <h3>Offene Zahlungen</h3>
+        <p id="openPayments">Keine offenen Zahlungen.</p>
+    </div>
+
+    <h2>Schülerübersicht</h2>
+    <form id="addStudentForm">
+        <input type="text" id="studentNameInput" placeholder="Schülername">
+        <button type="submit">Hinzufügen</button>
+    </form>
+
+    <ul id="studentList"></ul>
+
+    <h2>Daten Transfer</h2>
+    <div>
+        <button id="exportDataBtn" class="button2">Daten exportieren</button>
+    </div>
+    <br>
+    <div>
+        <label for="importDataInput" style="font-size: 15px;">Daten importieren</label>
+        <input type="file" id="importDataInput" accept=".json" style="display: none;">
+    </div>
+
+    <h2>Home</h2>
+    <div>
+        <button onclick="location.href='main/home.html'" class="button2">Zur Homepage</button>
+    </div>
+</body>
+
+<footer class="footer">
+    <p>&copy; 2025 - 2026 Education Utilities · <a href="https://sites.google.com/view/r-ravinthrarasa/impressum" target="_blank">Rechte</a></p>
+</footer>
+
+<script src="JavaScript/script.js"></script>
+
+</html>

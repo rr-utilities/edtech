@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Onion Studio</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="icon" href="main/favicon.jpg" type="image/png">
+    <link rel="apple-touch-icon" href="main/favicon.jpg">
+    <meta name="apple-mobile-web-app-title" content="Onion Studio">
+</head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<body>
+
+<!-- Edit-Bereich -->
+<div class="panel">
+
+    <div class="topbar">
+        <a href="main/home.html"><button>Home</button></a>
+        <button onclick="jump(-1)">⬅</button>
+        <span id="info"></span>
+        <button onclick="jump(1)">➡</button>
+
+        <button onclick="addFrame()">＋</button>
+        <button onclick="duplicateFrame()">Duplizieren</button>
+        <button onclick="deleteFrame()">Löschen</button>
+        <button onclick="newProject()">Neu</button>
+    </div>
+
+    <canvas id="edit" width="600" height="400"></canvas>
+
+    <div class="bottombar">
+        <button id="penBtn" class="tool" onclick="setTool('pen')">Stift</button>
+        <input type="color" id="color" value="#000000">
+        <input type="range" id="size" min="1" max="25" value="2">
+        <button id="eraserBtn" class="tool" onclick="setTool('eraser')">Radierer</button>
+    </div>
+</div>
+
+<!-- Preview-Bereich -->
+<div class="panel">
+
+    <div class="previewbar">
+        FPS:
+        <input id="fps" type="number" value="6">
+
+        <button onclick="play()">▶</button>
+        <button onclick="exportFrames()">JPG-Export</button>
+        <button onclick="exportVideo()">MP4-Export</button>
+    </div>
+
+    <canvas id="preview" width="600" height="400"></canvas>
+
+    <div class="toolbar">
+        <button class="tool" onclick="exportProject()">Export Projekt</button>
+
+        <label class="tool">
+            Import Projekt
+            <input type="file" accept=".json,.animjson" onchange="importProject(event)" hidden>
+        </label>
+    </div>
+</div>
+</body>
+
+<script src="app.js"></script>
+<script src="export.js"></script>
+
+</html>

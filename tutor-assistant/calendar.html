@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Tutor Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="icon" href="main/favicon/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="main/favicon/favicon.png">
+    <meta name="apple-mobile-web-app-title" content="Tutor Assistant">
+</head>
+
+<body>
+    <header style="display: flex; align-items: center; justify-content: space-between;">
+        <nav style="display: flex; gap: 8px;">
+            <button onclick="window.location.href='index.html'" style="font-size: 14px;">Zurück</button>
+            <button id="prevMonth">←</button>
+        </nav>
+
+        <h1 id="monthLabel">Kalender</h1>
+
+        <nav>
+            <button id="nextMonth">→</button>
+        </nav>
+    </header>
+
+    <div id="calendarContainer">
+        <div id="weekdayRow">
+            <div>Mo</div><div>Di</div><div>Mi</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div>
+        </div>
+        <div id="calendar"></div>
+    </div>
+
+    <div id="popup">
+        <h3 id="popupDate"></h3>
+        <div id="popupEvents"></div>
+        <button onclick="closePopup()">Schliessen</button>
+    </div>
+
+</body>
+
+<script src="JavaScript/calendar.js"></script>
+
+</html>
